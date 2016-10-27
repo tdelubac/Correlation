@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
     }
 
     Profile<float,float> prof(axis1);
+
+    auto start = std::chrono::high_resolution_clock::now();
     // first loop
     for (int i=0; i<myData.size(); ++i){
         if (i%1000==0)
@@ -56,6 +58,11 @@ int main(int argc, char *argv[])
             prof.fill(dist,myData.val()[i]*myData.val()[j],myData.weight()[i]*myData.weight()[j]);
         }
     }
+    auto elapsed = std::chrono::high_resolution_clock::now() - start;
+    
     std::cout << "OUTPUT" << "\n";
     std::cout << prof.getData() << "\n";
+
+    long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+    std::cout << "BruteForce ellapsed time " << microseconds/1e6 << " s" <<  "\n";
 }
