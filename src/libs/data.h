@@ -20,6 +20,9 @@ class Data
     Data() {}
     Data(std::string source, size_t dim) {this->load(source,dim);} 
     // getter functions returning constant reference to member functions
+    size_t size(){
+        return m_x.size();
+    }
     const std::vector<TYPE>  & x()
     {
         return m_x;
