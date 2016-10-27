@@ -28,10 +28,49 @@ class Matrix
             throw std::out_of_range("Matrix: Element out of range");
         return m_matrix[row * m_columns + column];
     }
+    // addition operator
+    const Matrix<TYPE> operator+(const Matrix<TYPE> & right){
+        if ((this->getRows() != right.getRows()) | (this->getColumns() != right.getColumns())){
+            throw std::length_error("const Matrix<TYPE> operator+(const Matrix<TYPE> & right): left and right matrices does not have same number of columns and/or rows.");
+        }
+        Matrix<TYPE> result(m_rows,m_columns);
+        for (int i=0; i<this->getRows(); ++i){
+            for (int j=0; j<this->getColumns(); ++j){
+                result(i,j) = (*this)(i,j)+right(i,j);
+            }
+        }
+        return result;
+    }
+    // subtraction operator
+    const Matrix<TYPE> operator-(const Matrix<TYPE> & right){
+        if ((this->getRows() != right.getRows()) | (this->getColumns() != right.getColumns())){
+            throw std::length_error("const Matrix<TYPE> operator-(const Matrix<TYPE> & right): left and right matrices does not have same number of columns and/or rows.");
+        }
+        Matrix<TYPE> result(m_rows,m_columns);
+        for (int i=0; i<this->getRows(); ++i){
+            for (int j=0; j<this->getColumns(); ++j){
+                result(i,j) = (*this)(i,j)-right(i,j);
+            }
+        }
+        return result;
+    }
+    // multiplication operator
+    const Matrix<TYPE> operator*(const Matrix<TYPE> & right){
+        if ((this->getRows() != right.getRows()) | (this->getColumns() != right.getColumns())){
+            throw std::length_error("const Matrix<TYPE> operator*(const Matrix<TYPE> & right): left and right matrices does not have same number of columns and/or rows.");
+        }
+        Matrix<TYPE> result(m_rows,m_columns);
+        for (int i=0; i<this->getRows(); ++i){
+            for (int j=0; j<this->getColumns(); ++j){
+                result(i,j) = (*this)(i,j)*right(i,j);
+            }
+        }
+        return result;
+    }
     // division operator
     const Matrix<TYPE> operator/(const Matrix<TYPE> & denominator){
         if ((this->getRows() != denominator.getRows()) | (this->getColumns() != denominator.getColumns())){
-            throw std::length_error("const Matrix<TYPE> operator/(const Matrix<TYPE> numerator, const Matrix<TYPE> denominator): numerator and denominator does not have same number of columns and/or rows.");
+            throw std::length_error("const Matrix<TYPE> operator/(const Matrix<TYPE> & denominator): numerator and denominator matrices does not have same number of columns and/or rows.");
         }
         Matrix<TYPE> result(m_rows,m_columns);
         for (int i=0; i<this->getRows(); ++i){
