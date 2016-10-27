@@ -1,5 +1,7 @@
 project(Correlation)
 
+set(CMAKE_BUILD_TYPE Release)
+
 add_executable(
   correlation
   src/main.cpp
