@@ -61,14 +61,13 @@ template<class TYPE_MATRIX, class TYPE_AXES=TYPE_MATRIX>
         return m_weight;
     }
     Matrix<TYPE_MATRIX> getVariance(){
-        return this->getData2() - pow(this->getData(),2);
+        return this->getData2() - (this->getData()*this->getData());
     }
     // filler 1D
     void fill(TYPE_AXES val1, TYPE_MATRIX data, TYPE_MATRIX weight){
         size_t bin1;
         try{
             bin1 = m_axis1.getBin(val1);
-            std::cout << "bin " <<  bin1 << "\n";
         }catch(std::exception &err){
             std::cout << "Warning: " << err.what() << "\n";
             return;
