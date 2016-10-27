@@ -42,6 +42,12 @@ template<class TYPE_MATRIX, class TYPE_AXES=TYPE_MATRIX>
     }
     */
     // getter functions
+    const Axis<TYPE_AXES> & getAxis1(){
+        return m_axis1;
+    }
+    const Axis<TYPE_AXES> & getAxis2(){
+        return m_axis2;
+    }
     Matrix<TYPE_MATRIX> getData(){
         return m_data/m_weight;
     }
@@ -62,14 +68,15 @@ template<class TYPE_MATRIX, class TYPE_AXES=TYPE_MATRIX>
         size_t bin1;
         try{
             bin1 = m_axis1.getBin(val1);
+            std::cout << "bin " <<  bin1 << "\n";
         }catch(std::exception &err){
             std::cout << "Warning: " << err.what() << "\n";
             return;
         }
-        m_data(val1,0)+=data*weight;
-        m_data2(val1,0)+=data*data*weight;
-        m_entries(val1,0)+=1;
-        m_weight(val1,0)+=weight;
+        m_data(bin1,0)+=data*weight;
+        m_data2(bin1,0)+=data*data*weight;
+        m_entries(bin1,0)+=1;
+        m_weight(bin1,0)+=weight;
         return;
     }
     // filler 2D
@@ -88,10 +95,10 @@ template<class TYPE_MATRIX, class TYPE_AXES=TYPE_MATRIX>
             std::cout << "Warning: " << err.what() << "\n";
             return;
         }
-        m_data(val1,val2)+=data*weight;
-        m_data2(val1,val2)+=data*data*weight;
-        m_entries(val1,val2)+=1;
-        m_weight(val1,val2)+=weight;
+        m_data(bin1,bin2)+=data*weight;
+        m_data2(bin1,bin2)+=data*data*weight;
+        m_entries(bin1,bin2)+=1;
+        m_weight(bin1,bin2)+=weight;
         return;
     }
     };
