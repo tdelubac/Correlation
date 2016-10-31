@@ -34,7 +34,7 @@ int main(){
     // Defining binning
     int nbins = 20;
     float min = 0.015;
-    float max = 0.5;
+    float max = 0.1;
     Axis<float> axis1, axis2;
     for (int i=0; i<nbins+1; ++i){
         float bin;
@@ -45,13 +45,13 @@ int main(){
     // first loop
     auto start = std::chrono::high_resolution_clock::now();
     float dist_max = 2*sin(max/2.); //max distance in Euclidean space
+    std::vector<QPoint> results;  // faster to create a single vector and to clear it than to create a new each time. 
     for (int i=0; i<myData.size(); ++i){
         if (i%1000==0)
             std::cout << i << "\n"; 
         point corner_min(vec.data()[i].x-dist_max,vec.data()[i].y-dist_max,vec.data()[i].z-dist_max);
         point corner_max(vec.data()[i].x+dist_max,vec.data()[i].y+dist_max,vec.data()[i].z+dist_max);
         box query_box(corner_min,corner_max);
-        std::vector<QPoint> results;
         tree.query(boost::geometry::index::intersects(query_box), std::back_inserter(results));
         for (int j=0; j<results.size(); ++j){
             if(results.data()[j].ind > vec.data()[i].ind){
@@ -60,8 +60,11 @@ int main(){
                 if ( (dist<min) | (dist>=max) )
                     continue;    
                 prof.fill(dist,vec.data()[i].val*results.data()[j].val,vec.data()[i].weight*results.data()[j].weight);
+                //prof.fill(dist,vec.data()[i].val,vec.data()[i].weight);
+                //prof.fill(dist,results.data()[j].val,results.data()[j].weight);
             }
         }
+        results.clear();
     }
     auto elapsed = std::chrono::high_resolution_clock::now() - start;
    
@@ -69,5 +72,5 @@ int main(){
     std::cout << prof.getData() << "\n";
 
     long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
-    std::cout << "BruteForce ellapsed time " << microseconds/1e6 << " s" <<  "\n";
+    std::cout << "Tree ellapsed time " << microseconds/1e6 << " s" <<  "\n";
 }
