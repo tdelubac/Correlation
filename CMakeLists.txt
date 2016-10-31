@@ -11,3 +11,8 @@ add_executable(
   bruteforce
   src/bruteforce.cpp
   )
+
+add_executable(
+  tree
+  src/tree.cpp
+  )
