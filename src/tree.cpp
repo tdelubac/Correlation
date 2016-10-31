@@ -9,8 +9,20 @@
 #include "libs/custom_boost_point.h"
 #include "libs/data.h"
 #include "libs/profile.h"
+#include "libs/LUT.h"
 
 int main(){
+    // Creating LUT
+    std::cout << "pass1" << "\n";
+    const int bound = 100000;
+    std::cout << "pass2" << "\n";
+    const int Lbound = -bound;
+    std::cout << "pass3" << "\n";
+    const int Ubound = bound;
+    std::cout << "pass4" << "\n";
+    const double coeff = 1./bound;
+    std::cout << "pass5" << "\n";
+    LUT<Lbound,Ubound,double,double> asin_LUT(asin,coeff);
     // defining types
     typedef float precision;
     typedef boost::geometry::model::point<precision, 3, boost::geometry::cs::cartesian> point;
@@ -34,7 +46,7 @@ int main(){
     // Defining binning
     int nbins = 20;
     float min = 0.015;
-    float max = 0.1;
+    float max = 0.5;
     Axis<float> axis1, axis2;
     for (int i=0; i<nbins+1; ++i){
         float bin;
@@ -55,8 +67,11 @@ int main(){
         tree.query(boost::geometry::index::intersects(query_box), std::back_inserter(results));
         for (int j=0; j<results.size(); ++j){
             if(results.data()[j].ind > vec.data()[i].ind){
-                float dist = sqrt( (vec.data()[i].x-results.data()[j].x)*(vec.data()[i].x-results.data()[j].x) + (vec.data()[i].y-results.data()[j].y)*(vec.data()[i].y-results.data()[j].y) + (vec.data()[i].z-results.data()[j].z)*(vec.data()[i].z-results.data()[j].z) );
-                dist = 2*std::asin(dist/2.);
+                float dist = sqrt( pow(vec.data()[i].x-results.data()[j].x,2) + pow(vec.data()[i].y-results.data()[j].y,2) + pow(vec.data()[i].z-results.data()[j].z,2));
+                //std::cout << 2*std::asin(dist/2.) << " " << 2*asin_LUT(dist/2.) << "\n";
+                dist = 2*std::asin(dist/2.);                
+                //dist = 2*asin_LUT(dist/2.);
+                
                 if ( (dist<min) | (dist>=max) )
                     continue;    
                 prof.fill(dist,vec.data()[i].val*results.data()[j].val,vec.data()[i].weight*results.data()[j].weight);
