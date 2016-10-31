@@ -55,8 +55,8 @@ int main(){
         tree.query(boost::geometry::index::intersects(query_box), std::back_inserter(results));
         for (int j=0; j<results.size(); ++j){
             if(results.data()[j].ind > vec.data()[i].ind){
-                float dist = sqrt( pow(vec.data()[i].x-results.data()[j].x,2) + pow(vec.data()[i].y-results.data()[j].y,2)+ pow(vec.data()[i].z-results.data()[j].z,2) );
-                dist = 2*asin(dist/2.);
+                float dist = sqrt( (vec.data()[i].x-results.data()[j].x)*(vec.data()[i].x-results.data()[j].x) + (vec.data()[i].y-results.data()[j].y)*(vec.data()[i].y-results.data()[j].y) + (vec.data()[i].z-results.data()[j].z)*(vec.data()[i].z-results.data()[j].z) );
+                dist = 2*std::asin(dist/2.);
                 if ( (dist<min) | (dist>=max) )
                     continue;    
                 prof.fill(dist,vec.data()[i].val*results.data()[j].val,vec.data()[i].weight*results.data()[j].weight);
