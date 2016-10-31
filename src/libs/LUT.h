@@ -27,4 +27,4 @@ template <int LBound, int UBound, class TYPE_RESULT, class TYPE_ARG>
     }
 };
 
-#endif DEF_LUT
+#endif

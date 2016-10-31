@@ -13,15 +13,10 @@
 
 int main(){
     // Creating LUT
-    std::cout << "pass1" << "\n";
     const int bound = 100000;
-    std::cout << "pass2" << "\n";
     const int Lbound = -bound;
-    std::cout << "pass3" << "\n";
     const int Ubound = bound;
-    std::cout << "pass4" << "\n";
     const double coeff = 1./bound;
-    std::cout << "pass5" << "\n";
     LUT<Lbound,Ubound,double,double> asin_LUT(asin,coeff);
     // defining types
     typedef float precision;
